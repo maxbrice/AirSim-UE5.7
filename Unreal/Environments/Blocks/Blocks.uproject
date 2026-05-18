@@ -1,30 +1,46 @@
 {
-	"FileVersion": 3,
-	"EngineAssociation": "4.27",
-	"Category": "",
-	"Description": "",
-	"Modules": [
-		{
-			"Name": "Blocks",
-			"Type": "Runtime",
-			"LoadingPhase": "Default",
-			"AdditionalDependencies": [
-				"AirSim"
-			]
-		}
-	],
-	"Plugins": [
-		{
-			"Name": "AirSim",
-			"Enabled": true
-		},
-		{
-			"Name": "SteamVR",
-			"Enabled": false
-		},
-		{
-			"Name": "OculusVR",
-			"Enabled": false
-		}
-	]
+    "FileVersion":  3,
+    "EngineAssociation":  "5.6",
+    "Category":  "",
+    "Description":  "",
+    "Modules":  [
+                    {
+                        "Name":  "Blocks",
+                        "Type":  "Runtime",
+                        "LoadingPhase":  "Default",
+                        "AdditionalDependencies":  [
+                                                       "AirSim"
+                                                   ]
+                    }
+                ],
+    "Plugins":  [
+                    {
+                        "Name":  "AirSim",
+                        "Enabled":  true
+                    },
+                    {
+                        "Name":  "SteamVR",
+                        "Enabled":  false
+                    },
+                    {
+                        "Name":  "OculusVR",
+                        "Enabled":  false
+                    },
+                    {
+                        "Name":  "InterchangeImportCineware",
+                        "Enabled":  false
+                    },
+                    {
+                        "Name":  "Postshot",
+                        "Enabled":  false
+                    },
+                    {
+                        "Name":  "RiderLink",
+                        "Enabled":  false
+                    },
+                    {
+                        "Name":  "GameplayCameras",
+                        "Enabled":  false
+                    }
+                ]
 }

@@ -78,7 +78,8 @@ public class AirSim : ModuleRules
 
         bEnableExceptions = true;
 
-        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "ImageWrapper", "RenderCore", "RHI", "AssetRegistry", "PhysicsCore", "PhysXVehicles", "PhysXVehicleLib", "PhysX", "APEX", "Landscape", "CinematicCamera" });
+        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "ImageWrapper", "RenderCore", "RHI", "AssetRegistry", "PhysicsCore", "Landscape", "CinematicCamera" });
+        PublicDefinitions.Add("AIRSIM_WITH_PHYSX_VEHICLES=0");
         PrivateDependencyModuleNames.AddRange(new string[] { "UMG", "Slate", "SlateCore" });
 
         //suppress VC++ proprietary warnings

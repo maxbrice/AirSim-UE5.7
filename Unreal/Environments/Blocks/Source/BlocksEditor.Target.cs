@@ -9,8 +9,9 @@ public class BlocksEditorTarget : TargetRules
 	{
 		Type = TargetType.Editor;
 		ExtraModuleNames.AddRange(new string[] { "Blocks" });
-        DefaultBuildSettings = BuildSettingsVersion.V2;
-        //bUseUnityBuild = false;
+        DefaultBuildSettings = BuildSettingsVersion.V5;
+        IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_6;
+        CppStandard = CppStandardVersion.Cpp20;        //bUseUnityBuild = false;
         //bUsePCHFiles = false;
     }
 }

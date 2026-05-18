@@ -11,6 +11,7 @@
 #include "Runtime/Engine/Classes/Engine/StaticMesh.h"
 #include "UObject/UObjectIterator.h"
 #include "Camera/CameraComponent.h"
+#include "CineCameraComponent.h"
 #include "Runtime/Engine/Classes/GameFramework/PlayerStart.h"
 #include "Misc/MessageDialog.h"
 #include "Engine/LocalPlayer.h"
@@ -23,8 +24,8 @@
 #include <exception>
 #include "common/common_utils/Utils.hpp"
 #include "Modules/ModuleManager.h"
-#include "ARFilter.h"
-#include "AssetRegistryModule.h"
+#include "AssetRegistry/ARFilter.h"
+#include "AssetRegistry/AssetRegistryModule.h"
 #include "DetectionComponent.h"
 
 /*
@@ -316,6 +317,7 @@ template USceneCaptureComponent2D* UAirBlueprintLib::GetActorComponent(AActor*, 
 template UStaticMeshComponent* UAirBlueprintLib::GetActorComponent(AActor*, FString);
 template URotatingMovementComponent* UAirBlueprintLib::GetActorComponent(AActor*, FString);
 template UCameraComponent* UAirBlueprintLib::GetActorComponent(AActor*, FString);
+template UCineCameraComponent* UAirBlueprintLib::GetActorComponent(AActor*, FString);
 template UDetectionComponent* UAirBlueprintLib::GetActorComponent(AActor*, FString);
 
 bool UAirBlueprintLib::IsInGameThread()
@@ -492,9 +494,9 @@ std::vector<msr::airlib::MeshPositionVertexBuffersResponse> UAirBlueprintLib::Ge
             ENQUEUE_RENDER_COMMAND(GetVertexBuffer)
             (
                 [vertex_buffer, data](FRHICommandListImmediate& RHICmdList) {
-                    FVector* indices = (FVector*)RHILockVertexBuffer(vertex_buffer->VertexBufferRHI, 0, vertex_buffer->VertexBufferRHI->GetSize(), RLM_ReadOnly);
+                    FVector* indices = (FVector*)RHICmdList.LockBuffer(vertex_buffer->VertexBufferRHI, 0, vertex_buffer->VertexBufferRHI->GetSize(), RLM_ReadOnly);
                     memcpy(data, indices, vertex_buffer->VertexBufferRHI->GetSize());
-                    RHIUnlockVertexBuffer(vertex_buffer->VertexBufferRHI);
+                    RHICmdList.UnlockBuffer(vertex_buffer->VertexBufferRHI);
                 });
 
 #if ((ENGINE_MAJOR_VERSION > 4) || (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION >= 27))
@@ -514,9 +516,9 @@ std::vector<msr::airlib::MeshPositionVertexBuffersResponse> UAirBlueprintLib::Ge
                 ENQUEUE_RENDER_COMMAND(GetIndexBuffer)
                 (
                     [IndexBuffer, data_ptr](FRHICommandListImmediate& RHICmdList) {
-                        uint16_t* indices = (uint16_t*)RHILockIndexBuffer(IndexBuffer->IndexBufferRHI, 0, IndexBuffer->IndexBufferRHI->GetSize(), RLM_ReadOnly);
+                        uint16_t* indices = (uint16_t*)RHICmdList.LockBuffer(IndexBuffer->IndexBufferRHI, 0, IndexBuffer->IndexBufferRHI->GetSize(), RLM_ReadOnly);
                         memcpy(data_ptr, indices, IndexBuffer->IndexBufferRHI->GetSize());
-                        RHIUnlockIndexBuffer(IndexBuffer->IndexBufferRHI);
+                        RHICmdList.UnlockBuffer(IndexBuffer->IndexBufferRHI);
                     });
 
                 //Need to force the render command to go through cause on the next iteration the buffer no longer exists
@@ -537,9 +539,9 @@ std::vector<msr::airlib::MeshPositionVertexBuffersResponse> UAirBlueprintLib::Ge
                 ENQUEUE_RENDER_COMMAND(GetIndexBuffer)
                 (
                     [IndexBuffer, data_ptr](FRHICommandListImmediate& RHICmdList) {
-                        uint32_t* indices = (uint32_t*)RHILockIndexBuffer(IndexBuffer->IndexBufferRHI, 0, IndexBuffer->IndexBufferRHI->GetSize(), RLM_ReadOnly);
+                        uint32_t* indices = (uint32_t*)RHICmdList.LockBuffer(IndexBuffer->IndexBufferRHI, 0, IndexBuffer->IndexBufferRHI->GetSize(), RLM_ReadOnly);
                         memcpy(data_ptr, indices, IndexBuffer->IndexBufferRHI->GetSize());
-                        RHIUnlockIndexBuffer(IndexBuffer->IndexBufferRHI);
+                        RHICmdList.UnlockBuffer(IndexBuffer->IndexBufferRHI);
                     });
 
                 FlushRenderingCommands();

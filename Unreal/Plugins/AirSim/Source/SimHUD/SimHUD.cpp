@@ -4,7 +4,6 @@
 #include "Misc/FileHelper.h"
 
 #include "Vehicles/Multirotor/SimModeWorldMultiRotor.h"
-#include "Vehicles/Car/SimModeCar.h"
 #include "Vehicles/ComputerVision/SimModeComputerVision.h"
 
 #include "common/AirSimSettings.hpp"
@@ -152,7 +151,7 @@ void ASimHUD::createMainWidget()
     //create main widget
     if (widget_class_ != nullptr) {
         APlayerController* player_controller = this->GetWorld()->GetFirstPlayerController();
-        auto* pawn = player_controller->GetPawn();
+        APawn* pawn = player_controller->GetPawn().Get();
         if (pawn) {
             std::string pawn_name = std::string(TCHAR_TO_ANSI(*pawn->GetName()));
             Utils::log(pawn_name);
@@ -245,13 +244,7 @@ std::vector<ASimHUD::AirSimSettings::SubwindowSetting>& ASimHUD::getSubWindowSet
 
 std::string ASimHUD::getSimModeFromUser()
 {
-    if (EAppReturnType::No == UAirBlueprintLib::ShowMessage(EAppMsgType::YesNo,
-                                                            "Would you like to use car simulation? Choose no to use quadrotor simulation.",
-                                                            "Choose Vehicle")) {
-        return AirSimSettings::kSimModeTypeMultirotor;
-    }
-    else
-        return AirSimSettings::kSimModeTypeCar;
+    return AirSimSettings::kSimModeTypeMultirotor;
 }
 
 void ASimHUD::loadLevel()
@@ -271,10 +264,6 @@ void ASimHUD::createSimMode()
         simmode_ = this->GetWorld()->SpawnActor<ASimModeWorldMultiRotor>(FVector::ZeroVector,
                                                                          FRotator::ZeroRotator,
                                                                          simmode_spawn_params);
-    else if (simmode_name == AirSimSettings::kSimModeTypeCar)
-        simmode_ = this->GetWorld()->SpawnActor<ASimModeCar>(FVector::ZeroVector,
-                                                             FRotator::ZeroRotator,
-                                                             simmode_spawn_params);
     else if (simmode_name == AirSimSettings::kSimModeTypeComputerVision)
         simmode_ = this->GetWorld()->SpawnActor<ASimModeComputerVision>(FVector::ZeroVector,
                                                                         FRotator::ZeroRotator,
